@@ -11,7 +11,7 @@
 #' @examples
 #' library(haven)
 #' data <- read_sas("completedata.sas7bdat")
-#' model_poisson <- M_poisson(Depression ~ Comorbidity1, data = data)
+#' model_poisson <- M_poisson( Comorbidity1~ Depression, data = data)
 #' cat("\nPoisson Regression:\n")
 #' cat("Coefficients:\n")
 #' print(model_poisson$coefficients)

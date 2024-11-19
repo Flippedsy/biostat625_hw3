@@ -1,0 +1,83 @@
+---
+title: "Using GLM.g.p Package"
+author: "Suyuan Wang"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using GLM.g.p Package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r config, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+##Introduction
+
+This vignette demonstrates the usage of the M_gaussian and M_poisson functions from the GLM.g.p package for generalized linear models.
+The M_gaussian function implements ordinary least squares regression for Gaussian-distributed data, while the M_poisson function implements Poisson regression for count data using Iteratively Reweighted Least Squares (IRLS).
+
+## Installation
+*To install the package, use the following command:*
+```{r}
+devtools::install_github("/biostat625_hw3/GLM.g.p")
+library(GLM.g.p)
+```
+
+##Example 1: Gaussian Regression
+*The M_gaussian function performs ordinary least squares regression for Gaussian-distributed data. Below is an example.*
+
+Here, we use the completedata.sas7bdat dataset included in the package and model Depression as a function of Fatalism.
+```{r}
+# Load Example Data
+library(haven)
+data <- read_sas(system.file("data", "completedata.sas7bdat", package = "GLM.g.p"))
+head(data)
+
+# Fit Gaussian regression model
+result_gaussian <- M_gaussian(Depression ~ Fatalism, data = data)
+
+# Output results
+result_gaussian
+```
+## Interpretation
+
+The Estimate column contains the regression coefficients.
+The R-squared and Adjusted R-squared provide measures of model fit.
+The F-statistic and corresponding p-value indicate the overall significance of the model.
+
+## Example 2: Poisson Regression
+*The M_poisson function performs Poisson regression, typically used for count data. Below is an example.*
+
+Here, we model Depression as a function of Comorbidity1.
+```{r}
+# Fit Poisson regression model
+result_poisson <- M_poisson(Depression ~ Comorbidity1, data = data)
+
+# Output results
+cat("Poisson Regression Results:\n")
+cat("Coefficients:\n")
+print(result_poisson$coefficients)
+cat("\nNull Deviance:", result_poisson$null_deviance, "\n")
+cat("Residual Deviance:", result_poisson$residual_deviance, "\n")
+cat("Converged:", result_poisson$converged, "\n")
+```
+## Interpretation
+
+The Coefficients represent the log-linear relationship between the predictor (Comorbidity1) and the response (Depression).
+The Null Deviance and Residual Deviance indicate model fit. Lower residual deviance suggests better fit.
+
+
+# Summary
+
+The `GLM.g.p` package provides two main functions:
+
+1. `M_gaussian`: For linear regression on Gaussian-distributed data.
+2. `M_poisson`: For Poisson regression on count data.
+
+
+
