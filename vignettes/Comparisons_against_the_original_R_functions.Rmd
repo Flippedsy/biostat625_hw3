@@ -1,0 +1,92 @@
+---
+title: "Comparisons_against_the_original_R_functions"
+author: Suyuan Wang
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Comparisons_against_the_original_R_functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(GLM.g.p)
+library(haven)
+library(bench)
+# Load completedata.sas7bdat from the package
+data <- data("completedata", package = "GLM.g.p")
+```
+
+## Introduction
+This vignette demonstrates the usage of the M_gaussian and M_poisson functions in the GLM.g.p package, including comparisons against R's built-in glm() function for Gaussian and Poisson families to validate correctness and efficiency.
+
+## Comparison 1: Gaussian Regression with M_gaussian
+We compare the results of M_gaussian() with glm() using the Gaussian family.
+```{r}
+# Fit models
+result_gaussian <- M_gaussian(Depression ~ Fatalism , data = data)
+result_glm <- glm(Depression  ~ Fatalism, data = data,family = gaussian)
+
+# Compare coefficients
+coef_gaussian <- result_gaussian$coefficients[, "Estimate"]
+coef_glm <- coef(result_glm)
+
+cat("Coefficients Comparison:\n")
+print(all.equal(coef_gaussian, coef_glm, tolerance = 1e-6))
+```
+## Efficiency Comparison
+We use the bench package to compare the performance of M_gaussian() and glm(family = gaussian).
+```{r}
+benchmark_gaussian <- bench::mark(
+  M_gaussian = M_gaussian(Depression ~ Fatalism, data = data),
+  glm_gaussian = glm(Depression ~ Fatalism, family = gaussian, data = data),
+  iterations = 100
+)
+print(benchmark_gaussian)
+```
+
+## Comparison 2: Poisson Regression with M_poisson
+We compare the results of M_poisson() with glm() using the Poisson family.
+```{r}
+# Fit models
+result_poisson <- M_poisson(Comorbidity1  ~ Depression, data = data)
+result_glm <- glm(Comorbidity1  ~ Depression, family = poisson, data = data)
+
+# Compare coefficients
+coef_poisson <- result_poisson$coefficients
+coef_glm <- coef(result_glm)
+
+cat("Coefficients Comparison:\n")
+print(all.equal(coef_poisson, coef_glm, tolerance = 1e-6))
+```
+
+## Efficiency Comparison
+We use the bench package to compare the performance of M_poisson() and glm(family = poisson).
+
+```{r}
+benchmark_poisson <- bench::mark(
+  M_poisson = M_poisson(y ~ x, data = data_poisson),
+  glm_poisson = glm(y ~ x, family = poisson, data = data_poisson),
+  iterations = 100
+)
+print(benchmark_poisson)
+```
+
+## Summary
+Both M_gaussian and M_poisson produce results that are nearly identical to the respective built-in glm() functions (family = gaussian and family = poisson).
+Benchmarks demonstrate that the custom implementations are comparable in efficiency, with potential trade-offs depending on use cases.
+
+For more details about the functions, refer to their help pages:
+```{r}
+?M_gaussian
+?M_poisson
+```
+
+
+

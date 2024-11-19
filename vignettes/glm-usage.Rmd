@@ -1,7 +1,6 @@
 ---
 title: "Using GLM.g.p Package"
 author: "Suyuan Wang"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Using GLM.g.p Package}
