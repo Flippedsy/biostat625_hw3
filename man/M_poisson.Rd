@@ -20,7 +20,7 @@ This function performs Poisson regression using Iteratively Reweighted Least Squ
 }
 \examples{
 library(haven)
-data <- read_sas("completedata.sas7bdat")
+data <- data("completedata", package = "GLM.g.p")
 model_poisson <- M_poisson( Comorbidity1~ Depression, data = data)
 cat("\nPoisson Regression:\n")
 cat("Coefficients:\n")

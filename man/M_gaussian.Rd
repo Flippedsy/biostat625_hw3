@@ -20,7 +20,7 @@ This function performs a Gaussian generalized linear model using ordinary least 
 }
 \examples{
 library(haven)
-data <- read_sas("completedata.sas7bdat")
+data <- data("completedata", package = "GLM.g.p")
 result <- M_gaussian(Depression ~ Fatalism, data = data)
 
 }
