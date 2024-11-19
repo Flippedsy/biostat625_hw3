@@ -10,7 +10,7 @@
 #'
 #' @examples
 #' library(haven)
-#' data <- data("completedata", package = "GLM.g.p")
+#' data <- read_sas(system.file("data", "completedata.sas7bdat", package = "GLM.g.p"))
 #' result <- M_gaussian(Depression ~ Fatalism, data = data)
 #'
 #' @export

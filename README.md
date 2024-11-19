@@ -19,7 +19,7 @@ install.packages("devtools")
 devtools::install_github("yourusername/GLM.g.p")
 ```
 
-Usage
+## Usage
 After installing the package, load it using:
 
 ```{r}
@@ -86,6 +86,6 @@ For detailed examples and explanations, see the vignette:
 ```{r}
 vignette("glm-usage", package = "GLM.g.p")
 ```
-License
+## License
 This package is licensed under the MIT License. See LICENSE for detail
 

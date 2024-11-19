@@ -10,8 +10,8 @@
 #'
 #' @examples
 #' library(haven)
-#' data <- data("completedata", package = "GLM.g.p")
-#' model_poisson <- M_poisson( Comorbidity1~ Depression, data = data)
+#' data <- read_sas(system.file("data", "completedata.sas7bdat", package = "GLM.g.p"))
+#' model_poisson <- M_poisson( Comorbidity1~ Fatalism, data = data)
 #' cat("\nPoisson Regression:\n")
 #' cat("Coefficients:\n")
 #' print(model_poisson$coefficients)

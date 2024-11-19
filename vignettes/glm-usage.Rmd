@@ -23,7 +23,6 @@ The M_gaussian function implements ordinary least squares regression for Gaussia
 ## Installation
 *To install the package, use the following command:*
 ```{r}
-devtools::install_github("/biostat625_hw3/GLM.g.p")
 library(GLM.g.p)
 ```
 

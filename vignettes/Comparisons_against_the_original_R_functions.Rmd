@@ -20,7 +20,7 @@ library(GLM.g.p)
 library(haven)
 library(bench)
 # Load completedata.sas7bdat from the package
-data <- data("completedata", package = "GLM.g.p")
+data <- read_sas(system.file("data", "completedata.sas7bdat", package = "GLM.g.p"))
 ```
 
 ## Introduction
@@ -43,12 +43,22 @@ print(all.equal(coef_gaussian, coef_glm, tolerance = 1e-6))
 ## Efficiency Comparison
 We use the bench package to compare the performance of M_gaussian() and glm(family = gaussian).
 ```{r}
+# Benchmarking execution time only
 benchmark_gaussian <- bench::mark(
-  M_gaussian = M_gaussian(Depression ~ Fatalism, data = data),
-  glm_gaussian = glm(Depression ~ Fatalism, family = gaussian, data = data),
+  M_gaussian = {
+    M_gaussian(Depression ~ Fatalism, data = data)
+    NULL  # Ensure consistent return value
+  },
+  glm_gaussian = {
+    glm(Depression ~ Fatalism, data = data, family = gaussian)
+    NULL  # Ensure consistent return value
+  },
   iterations = 100
 )
+
+# Print benchmark results
 print(benchmark_gaussian)
+
 ```
 
 ## Comparison 2: Poisson Regression with M_poisson
@@ -70,11 +80,20 @@ print(all.equal(coef_poisson, coef_glm, tolerance = 1e-6))
 We use the bench package to compare the performance of M_poisson() and glm(family = poisson).
 
 ```{r}
+# Benchmark comparison for Poisson regression models
 benchmark_poisson <- bench::mark(
-  M_poisson = M_poisson(y ~ x, data = data_poisson),
-  glm_poisson = glm(y ~ x, family = poisson, data = data_poisson),
+  M_poisson = {
+    M_poisson(Comorbidity1 ~ Fatalism, data = data)
+    NULL  # Ensure consistent return value
+  },
+  glm_poisson = {
+    glm(Comorbidity1 ~ Fatalism, family = poisson, data = data)
+    NULL  # Ensure consistent return value
+  },
   iterations = 100
 )
+
+# Print benchmark results
 print(benchmark_poisson)
 ```
 
